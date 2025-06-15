@@ -1,0 +1,14 @@
+[build]
+builder = "nixpacks"
+buildCommand = "pip install -r requirements.txt"
+
+[deploy]
+startCommand = "python3.11 check_env.py && gunicorn justemma:app --bind 0.0.0.0:$PORT --workers 1 --timeout 120 --keep-alive 5 --max-requests 1000 --max-requests-jitter 50 --access-logfile - --error-logfile - --log-level info --preload"
+healthcheckPath = "/health"
+healthcheckTimeout = 100
+restartPolicyType = "always"
+restartPolicyMaxRetries = 3
+
+[deploy.env]
+PYTHON_VERSION = "3.11"
+PORT = "8080" 
